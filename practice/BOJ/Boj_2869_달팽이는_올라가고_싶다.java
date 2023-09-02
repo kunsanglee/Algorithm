@@ -19,16 +19,13 @@ public class Boj_2869_달팽이는_올라가고_싶다 {
         int a = list.get(0);
         int b = list.get(1);
         int v = list.get(2);
-        int total = 0;
-        int day = 1;
-        while (true) {
-            total += a;
-            if (total >= v) {
-                System.out.println(day);
-                return;
-            }
-            total -= b;
-            day++;
+
+        int total = (v - b) / (a - b);
+
+        if ((v - b) % (a - b) != 0) {
+            total++;
         }
+
+        System.out.println(total);
     }
 }
