@@ -17,22 +17,30 @@ public class Boj_15651_N과M_3 {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         selected = new int[M + 1];
-        recursive(1);
+        recurse(1);
         System.out.println(sb.toString());
     }
 
-    private static void recursive(int k) {
+    private static void recurse(int k) {
         if (k > M) {
-            for (int i = 1; i <= M; i++) {
-                sb.append(selected[i]).append(" ");
-            }
-            sb.append("\n");
+            completeSelected();
             return;
         }
-        for (int cand = 1; cand <= N; cand++) {
-            selected[k] = cand;
-            recursive(k + 1);
-            selected[k] = 0;
+        for (int candidate = 1; candidate <= N; candidate++) {
+            setSelected(k, candidate);
         }
+    }
+
+    private static void completeSelected() {
+        for (int i = 1; i <= M; i++) {
+            sb.append(selected[i]).append(" ");
+        }
+        sb.append("\n");
+    }
+
+    private static void setSelected(int k, int candidate) {
+        selected[k] = candidate;
+        recurse(k + 1);
+        selected[k] = 0;
     }
 }
