@@ -20,13 +20,13 @@ class Solution {
     static ArrayList<int[][]> fixedParts = new ArrayList<>();
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, 1, -1};
-    static int col, row, total;
+    static int row, col, total;
     public int solution(int[][] game_board, int[][] table) {
         total = 0;
-        col = table.length;
-        row = table[0].length;
-        partVisited = new boolean[col][row];
-        holeVisited = new boolean[col][row];
+        row = table.length;
+        col = table[0].length;
+        partVisited = new boolean[row][col];
+        holeVisited = new boolean[row][col];
 
         make(game_board, holeVisited, holes, 0);
         make(table, partVisited, parts, 1);
@@ -115,8 +115,8 @@ class Solution {
 
     // game_board -> 0, table -> 1 로 구분하여 빈 칸과 그에 맞는 조각들을 bfs 로 얻어내서 list 로 묶어서 저장.
     private void make(int[][] board, boolean[][] visited, ArrayList<ArrayList<int[]>> list, int target) {
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 if (!visited[i][j] && board[i][j] == target) {
                     Queue<int[]> queue = new LinkedList<>();
                     queue.offer(new int[]{i, j});
@@ -139,7 +139,7 @@ class Solution {
             for (int i = 0; i < dx.length; i++) {
                 int nx = x + dx[i];
                 int ny = y + dy[i];
-                if (0 <= nx && 0 <= ny && nx < row && ny < col) {
+                if (0 <= nx && 0 <= ny && nx < col && ny < row) {
                     if (!visited[ny][nx] && board[ny][nx] == target) {
                         visited[ny][nx] = true;
                         part.add(new int[]{ny, nx});
