@@ -22,7 +22,7 @@ public class Main {
         box = new int[n][m];
         visited = new boolean[n][m];
         makeBox(br);
-        System.out.println(bfs() - 1);
+        System.out.println(bfs());
     }
 
     private static int bfs() {
@@ -53,7 +53,7 @@ public class Main {
                 }
             }
         }
-        return days;
+        return days - 1;
     }
 
     private static void makeBox(BufferedReader br) throws IOException {
