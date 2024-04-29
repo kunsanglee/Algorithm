@@ -1,4 +1,4 @@
-package practice.백준.greedy.silver.선긋기_2170;
+package practice.백준.greedy.gold.선긋기_2170;
 
 import java.io.BufferedReader;
 import java.io.IOException;
