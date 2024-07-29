@@ -1,4 +1,4 @@
-package practice.백준;
+package practice.백준.구현.silver.비밀번호발음하기_4659;
 
 import java.io.BufferedReader;
 import java.io.IOException;
