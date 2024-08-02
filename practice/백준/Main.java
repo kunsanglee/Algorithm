@@ -12,56 +12,7 @@ public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        String input;
 
-        while (!"end".equals(input = readLine())) {
-            if (isContainConsonant(input) && !isInARow(input) && !isEOInARow(input)) {
-                System.out.println("<" + input + "> is acceptable.");
-                continue;
-            }
-            System.out.println("<" + input + "> is not acceptable.");
-        }
-    }
-
-    private static boolean isEOInARow(String input) {
-        String[] split = input.split("");
-        for (int i = 0; i < split.length - 1; i++) {
-            String s = split[i];
-            if (s.equals("e") || s.equals("o")) {
-                continue;
-            }
-            if (s.equals(split[i + 1])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isInARow(String input) {
-        int length = input.length();
-        if (length < 3) {
-            return false;
-        }
-        for (int i = 0; i < length - 2; i++) {
-            String a = String.valueOf(input.charAt(i));
-            String b = String.valueOf(input.charAt(i + 1));
-            String c = String.valueOf(input.charAt(i + 2));
-            if (isContainConsonant(a) && isContainConsonant(b) && isContainConsonant(c)) {
-                return true;
-            }
-            if (!isContainConsonant(a) && !isContainConsonant(b) && !isContainConsonant(c)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isContainConsonant(String input) {
-        return input.contains("a") ||
-                input.contains("e") ||
-                input.contains("i") ||
-                input.contains("o") ||
-                input.contains("u");
     }
 
     private static String readLine() throws IOException {
