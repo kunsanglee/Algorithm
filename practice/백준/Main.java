@@ -3,8 +3,7 @@ package practice.백준;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -12,67 +11,57 @@ public class Main {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        int n = parseInt(readLine());
-        List<Integer> numbers = parseSplitToList(split(readLine(), " "));
-        int studentCount = parseInt(readLine());
-        for (int i = 0; i < studentCount; i++) {
-            List<Integer> studentInput = parseSplitToList(split(readLine(), " "));
-            int sex = studentInput.get(0);
-            int number = studentInput.get(1);
-            if (sex == 1) {
-                // number 배수를 변경
-                for (int j = number - 1; j < n; j += number) {
-                    switchOpposite(numbers, j);
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 0; i < t; i++) {
+            int n = Integer.parseInt(br.readLine());
+            String[] input = br.readLine().split(" ");
+            List<Integer> numbers = Arrays.stream(input)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+            // 필터링: 6명 이상의 선수가 있는 팀만 남김
+            Set<Integer> ok = numbers.stream()
+                    .filter(number -> Collections.frequency(numbers, number) >= 6)
+                    .collect(Collectors.toSet());
+
+            Map<Integer, List<Integer>> teamPositions = new HashMap<>();
+            for (int j = 0, k = 1; j < n; j++) {
+                int team = numbers.get(j);
+                if (ok.contains(team)) {
+                    teamPositions.putIfAbsent(team, new ArrayList<>());
+                    teamPositions.get(team).add(k++);
                 }
-                continue;
             }
-            // number 기준으로 좌우대칭 일치하는숫자 전부 변경
-            int j = number - 1;
-            int k = number - 1;
-            switchOpposite(numbers, j);
-            while (true) {
-                j++;
-                k--;
-                if (j < n && k >= 0 && numbers.get(j).equals(numbers.get(k))) {
-                    switchOpposite(numbers, j);
-                    switchOpposite(numbers, k);
-                    continue;
+
+            // 각 팀의 상위 4명의 점수 합산
+            Map<Integer, Integer> teamScores = new HashMap<>();
+            Map<Integer, Integer> teamFifthPositions = new HashMap<>();
+            for (Map.Entry<Integer, List<Integer>> entry : teamPositions.entrySet()) {
+                List<Integer> positions = entry.getValue();
+                Collections.sort(positions);
+                int team = entry.getKey();
+                int sum = positions.stream().limit(4).reduce(0, Integer::sum);
+                teamScores.put(team, sum);
+                teamFifthPositions.put(team, positions.get(4)); // 다섯 번째 주자의 순위 저장
+            }
+
+            // 우승팀 결정
+            int minScore = Integer.MAX_VALUE;
+            int winningTeam = -1;
+            for (int team : teamScores.keySet()) {
+                int score = teamScores.get(team);
+                if (score < minScore) {
+                    minScore = score;
+                    winningTeam = team;
+                } else if (score == minScore) {
+                    // 동점일 경우 다섯 번째 주자의 순위 비교
+                    if (teamFifthPositions.get(team) < teamFifthPositions.get(winningTeam)) {
+                        winningTeam = team;
+                    }
                 }
-                break;
             }
+
+            System.out.println(winningTeam);
         }
-        StringBuffer sb = new StringBuffer();
-        for (int i = 1; i <= numbers.size(); i++) {
-            int number = numbers.get(i - 1);
-            if (i % 20 == 0) {
-                sb.append(number).append("\n");
-                continue;
-            }
-            sb.append(number).append(" ");
-        }
-        System.out.println(sb);
-    }
-
-    private static void switchOpposite(List<Integer> numbers, int j) {
-        int current = numbers.get(j);
-        numbers.set(j, current == 1 ? 0 : 1);
-    }
-
-    private static String readLine() throws IOException {
-        return br.readLine();
-    }
-
-    private static int parseInt(String input) {
-        return Integer.parseInt(input);
-    }
-
-    private static String[] split(String input, String delimiter) {
-        return input.split(delimiter);
-    }
-
-    private static List<Integer> parseSplitToList(String[] inputs) {
-        return Arrays.stream(inputs)
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
     }
 }
