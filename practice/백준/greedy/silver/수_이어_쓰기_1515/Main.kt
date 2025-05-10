@@ -1,5 +1,7 @@
 @file:Suppress("ktlint:standard:no-wildcard-imports")
 
+package practice.백준.greedy.silver.수_이어_쓰기_1515
+
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
@@ -19,29 +21,23 @@ class Solution {
 
     // 문제 해결 메인 로직
     fun solve() {
-        // 예제: 3개의 수를 더해서 주어진 값보다 작거나 같은 최대값 찾기
-        val (n, target) = readIntList() // 첫 번째 줄에서 n과 target 읽기
-        val numbers = readIntList().sorted() // 두 번째 줄에서 숫자 목록 읽고 정렬
+        val input = reader.readLine()
 
-        var result = 0
-        for (i in 0 until numbers.size - 2) {
-            val first = numbers[i]
-            for (j in i + 1 until numbers.size - 1) {
-                val second = numbers[j]
-                for (k in j + 1 until numbers.size) {
-                    val third = numbers[k]
+        var n = 0
+        var i = 0
 
-                    val sum = first + second + third
-                    if (sum <= target && sum > result) {
-                        result = sum
-                    }
+        while (i < input.length) { // 입력한 문자열의 모든 인덱스를 확인한다.
+            n++
+            val currentNumber = n.toString() // 수를 증가시키면서 문자열로 만든다.
+
+            for (c in currentNumber) { // 각 자리수를 확인하고 일치하면 인덱스를 증가시킨다.
+                if (i < input.length && c == input[i]) {
+                    i++
                 }
             }
         }
 
-        writer.write("$result\n")
-        writer.flush()
-        writer.close()
+        println(n)
     }
 
     // 입력 처리 유틸리티 함수들
